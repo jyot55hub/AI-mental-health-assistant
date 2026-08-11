@@ -27,7 +27,10 @@ collection = chroma_client.get_collection(
 
 def retrieve_documents(query: str, top_k: int = 3) -> list[str]:
     """
-    Find the most relevant documents for a user query.
+    Find relevant mental-health documents for a user query.
+
+    Returns an empty list when the closest document is not
+    relevant enough to the query.
     """
 
     query_embedding = embedding_model.encode(
@@ -37,6 +40,19 @@ def retrieve_documents(query: str, top_k: int = 3) -> list[str]:
     results = collection.query(
         query_embeddings=query_embedding,
         n_results=top_k,
+        include=["documents", "distances"]
     )
 
-    return results["documents"][0]
+    documents = results.get("documents", [[]])[0]
+    distances = results.get("distances", [[]])[0]
+
+    # Reject weak matches.
+    RELEVANCE_THRESHOLD = 1.2
+
+    relevant_documents = [
+        document
+        for document, distance in zip(documents, distances)
+        if distance <= RELEVANCE_THRESHOLD
+    ]
+
+    return relevant_documents
