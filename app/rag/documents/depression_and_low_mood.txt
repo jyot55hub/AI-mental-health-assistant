@@ -1,0 +1,280 @@
+DEPRESSION AND LOW MOOD SUPPORT KNOWLEDGE BASE
+
+IMPORTANT PURPOSE
+
+This document provides general educational and supportive information
+about low mood and depression.
+
+It must not be used to diagnose a person with depression or any other
+mental health condition.
+
+Feeling sad or low at times is a common human experience. Depression is
+different from ordinary short-term mood changes and can involve persistent
+symptoms that affect daily life.
+
+If someone is experiencing severe distress, thoughts of suicide, thoughts
+of self-harm, or immediate danger, immediate safety should be prioritized.
+
+
+------------------------------------------------------------
+1. UNDERSTANDING LOW MOOD AND DEPRESSION
+------------------------------------------------------------
+
+Low mood can involve feelings such as sadness, unhappiness, tiredness,
+or reduced motivation.
+
+These feelings may occur in response to difficult experiences, stress,
+loss, disappointment, relationship difficulties, or other life challenges.
+
+Depression is a mental health condition that can involve a persistent
+low mood or a loss of interest or pleasure in activities.
+
+Depressive episodes can affect many areas of life, including:
+
+- Sleep
+- Eating habits
+- Energy
+- Concentration
+- Motivation
+- Work or studies
+- Relationships
+- Daily responsibilities
+
+Depression is different from simply having a bad day or experiencing a
+temporary emotional reaction to everyday difficulties.
+
+The assistant must not determine whether a user has depression based only
+on their messages.
+
+
+------------------------------------------------------------
+2. COMMON EXPERIENCES ASSOCIATED WITH DEPRESSION
+------------------------------------------------------------
+
+People experiencing depression may have different combinations of
+emotional, cognitive, physical, and behavioural changes.
+
+Possible experiences can include:
+
+- Persistent sadness or feeling emotionally empty
+- Loss of interest or pleasure in previously enjoyable activities
+- Feeling hopeless about the future
+- Feeling excessively guilty
+- Feeling worthless or having low self-esteem
+- Irritability or frustration
+- Feeling unusually tired or having low energy
+- Difficulty concentrating or making decisions
+- Changes in sleep patterns
+- Changes in appetite
+- Changes in weight
+- Feeling slowed down or restless
+- Withdrawing from friends, family, or usual activities
+- Difficulty managing normal responsibilities
+- Thoughts about death or suicide
+
+Not every person experiencing depression has the same symptoms.
+
+The presence of one or more of these experiences does not allow the
+assistant to diagnose depression.
+
+
+------------------------------------------------------------
+3. POSSIBLE CONTRIBUTING FACTORS
+------------------------------------------------------------
+
+Depression can result from a complex interaction of different factors.
+
+Possible contributing factors may include:
+
+- Difficult or stressful life events
+- Bereavement or significant loss
+- Relationship difficulties
+- Financial or work-related stress
+- Academic pressure
+- Social isolation
+- Traumatic experiences
+- Psychological factors
+- Biological or genetic factors
+- Physical health difficulties
+
+The assistant should not assume that it knows the cause of a user's
+low mood or emotional difficulties.
+
+Different people may experience similar symptoms for different reasons.
+
+
+------------------------------------------------------------
+4. GENERAL SUPPORTIVE SELF-CARE
+------------------------------------------------------------
+
+General self-care may support overall well-being when someone is feeling
+low, although self-care is not a replacement for professional treatment
+when significant support is needed.
+
+Helpful general strategies may include:
+
+- Maintaining a regular daily routine when possible
+- Continuing activities that are normally enjoyable
+- Staying connected with supportive friends or family
+- Talking with someone trusted about difficult feelings
+- Maintaining regular sleep habits where possible
+- Eating regular and balanced meals
+- Including physical activity when possible
+- Breaking large tasks into smaller and more manageable steps
+- Setting realistic goals rather than expecting immediate major changes
+- Reducing unnecessary pressure where possible
+- Avoiding isolation when support is available
+- Avoiding alcohol or illicit drugs as ways of coping
+
+People may have different levels of energy and ability while feeling low.
+
+The assistant should avoid presenting these strategies as guaranteed cures
+or suggesting that a person is responsible for "fixing" their depression
+through willpower alone.
+
+
+------------------------------------------------------------
+5. SUPPORT FROM OTHER PEOPLE
+------------------------------------------------------------
+
+Supportive relationships can be important when someone is struggling with
+low mood or emotional difficulties.
+
+A person may benefit from:
+
+- Speaking with a trusted friend
+- Talking with a family member or supportive person
+- Sharing feelings without fear of judgment
+- Asking for practical help with difficult tasks
+- Staying in contact with supportive people
+- Seeking guidance from a qualified mental health professional when needed
+
+When responding, the assistant should encourage supportive communication
+and avoid judging, blaming, or minimizing the person's feelings.
+
+
+------------------------------------------------------------
+6. WHEN PROFESSIONAL SUPPORT MAY BE HELPFUL
+------------------------------------------------------------
+
+Professional support may be especially helpful when low mood or emotional
+difficulties are:
+
+- Persistent
+- Severe
+- Getting worse
+- Causing significant distress
+- Interfering with studies, work, relationships, or daily activities
+- Making it difficult to manage normal responsibilities
+- Not improving with general self-care and support
+
+Qualified professionals can assess a person's individual situation.
+
+Support may include psychological therapies, counselling, or other
+appropriate care depending on the person's needs and professional
+assessment.
+
+The assistant must not prescribe medication or decide which treatment is
+appropriate for an individual user.
+
+
+------------------------------------------------------------
+7. TREATMENT INFORMATION
+------------------------------------------------------------
+
+Effective treatments for depression are available.
+
+Depending on a person's situation, professional care may include
+psychological treatments and, when appropriate, medication.
+
+Psychological treatments can help people develop new ways of thinking,
+coping, relating to others, and managing difficulties.
+
+Examples of psychological approaches used for depression include:
+
+- Cognitive behavioural therapy
+- Behavioural activation
+- Interpersonal psychotherapy
+- Problem-solving approaches
+
+Treatment decisions should be made with appropriately qualified healthcare
+or mental health professionals.
+
+The assistant should provide general educational information and should
+not tell a user which specific treatment or medication they personally
+need.
+
+
+------------------------------------------------------------
+8. HOW TO RESPOND TO SOMEONE FEELING LOW
+------------------------------------------------------------
+
+Supportive communication may include:
+
+- Acknowledging that their feelings sound difficult
+- Listening without judgment
+- Avoiding statements that minimize their experience
+- Avoiding assumptions about why they feel this way
+- Encouraging connection with supportive people
+- Encouraging professional support when difficulties are persistent or severe
+- Offering simple, manageable general coping ideas when appropriate
+
+The assistant should avoid saying things such as:
+
+- "You definitely have depression."
+- "Everything will definitely be okay."
+- "Just think positively."
+- "You should simply get over it."
+- "You have nothing to feel sad about."
+
+The assistant should remain calm, respectful, empathetic, and
+non-judgmental.
+
+
+------------------------------------------------------------
+9. CRISIS AND IMMEDIATE SAFETY
+------------------------------------------------------------
+
+Thoughts of suicide, self-harm, or an inability to stay safe require
+immediate attention.
+
+If a person expresses immediate danger, intent to harm themselves, intent
+to die by suicide, or an inability to stay safe, the assistant should
+prioritize immediate safety.
+
+The person should be encouraged to:
+
+- Contact local emergency services when there is immediate danger
+- Go to the nearest emergency department when appropriate
+- Contact an available local crisis service
+- Tell a trusted person nearby
+- Avoid remaining alone when immediate safety is a concern
+
+The assistant should not treat an immediate safety crisis as an ordinary
+low-mood or depression-management question.
+
+The assistant must not provide instructions, methods, or encouragement for
+self-harm or suicide.
+
+
+------------------------------------------------------------
+10. IMPORTANT ASSISTANT RESPONSE PRINCIPLES
+------------------------------------------------------------
+
+When responding to questions about depression or low mood, the assistant
+should:
+
+- Provide general educational information
+- Be supportive and respectful
+- Avoid diagnosing the user
+- Avoid assuming the cause of symptoms
+- Acknowledge feelings when appropriate
+- Avoid making unrealistic guarantees
+- Offer practical general strategies when supported by the knowledge base
+- Encourage professional support when difficulties are persistent, severe,
+  or significantly affect daily life
+- Prioritize immediate safety when there is a risk of self-harm or suicide
+- Clearly state when the available information is insufficient
+
+The retrieved knowledge should be treated as educational support and not
+as proof of a medical or psychological diagnosis.

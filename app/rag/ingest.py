@@ -1,61 +1,154 @@
 from pathlib import Path
-
 import chromadb
 from sentence_transformers import SentenceTransformer
 
 
-# Project paths
+# --------------------------------------------------
+# Paths
+# --------------------------------------------------
+
 BASE_DIR = Path(__file__).resolve().parent
 DOCUMENTS_DIR = BASE_DIR / "documents"
 VECTOR_STORE_DIR = BASE_DIR / "vector_store"
 
 
-# Load embedding model
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+# --------------------------------------------------
+# Embedding Model
+# --------------------------------------------------
+
+print("Loading embedding model...")
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-# Create ChromaDB client
-chroma_client = chromadb.PersistentClient(
+# --------------------------------------------------
+# ChromaDB
+# --------------------------------------------------
+
+client = chromadb.PersistentClient(
     path=str(VECTOR_STORE_DIR)
 )
 
-
-# Create or load our collection
-collection = chroma_client.get_or_create_collection(
-    name="mental_health_documents"
+collection = client.get_or_create_collection(
+    name="mental_health_knowledge"
 )
 
 
+# --------------------------------------------------
+# Text Chunking
+# --------------------------------------------------
+
+def chunk_text(text, chunk_size=800, overlap=150):
+    """
+    Split text into overlapping chunks.
+    """
+
+    chunks = []
+
+    start = 0
+
+    while start < len(text):
+        end = start + chunk_size
+
+        chunk = text[start:end]
+
+        chunks.append(chunk)
+
+        start += chunk_size - overlap
+
+    return chunks
+
+
+# --------------------------------------------------
+# Read and Store Documents
+# --------------------------------------------------
+
 def ingest_documents():
-    """Read text documents and store them in ChromaDB."""
+    """
+    Read all .txt files, create embeddings,
+    and store them in ChromaDB.
+    """
+
+    files = list(DOCUMENTS_DIR.glob("*.txt"))
+
+    if not files:
+        print("No .txt files found in documents folder.")
+        return
+
+    print(f"Found {len(files)} documents.")
 
     documents = []
     ids = []
+    metadatas = []
 
-    for file_path in DOCUMENTS_DIR.glob("*.txt"):
-        text = file_path.read_text(encoding="utf-8").strip()
+    for file_path in files:
 
-        if not text:
-            continue
+        print(f"Processing: {file_path.name}")
 
-        documents.append(text)
-        ids.append(file_path.stem)
+        text = file_path.read_text(
+            encoding="utf-8",
+            errors="ignore"
+        )
+
+        chunks = chunk_text(text)
+
+        for index, chunk in enumerate(chunks):
+
+            if not chunk.strip():
+                continue
+
+            documents.append(chunk)
+
+            ids.append(
+                f"{file_path.stem}_chunk_{index}"
+            )
+
+            metadatas.append({
+                "source": file_path.name
+            })
+
+    print(f"Created {len(documents)} chunks.")
 
     if not documents:
-        print("No documents found.")
+        print("No content was available to ingest.")
         return
 
-    embeddings = embedding_model.encode(documents).tolist()
+    print("Creating embeddings...")
 
-    collection.upsert(
+    embeddings = model.encode(
+        documents,
+        show_progress_bar=True
+    ).tolist()
+
+    print("Saving to ChromaDB...")
+
+    # Clear old data so rerunning the script
+    # does not create duplicate IDs.
+    try:
+        client.delete_collection(
+            name="mental_health_knowledge"
+        )
+    except Exception:
+        pass
+
+    collection = client.get_or_create_collection(
+        name="mental_health_knowledge"
+    )
+
+    collection.add(
         documents=documents,
         embeddings=embeddings,
         ids=ids,
+        metadatas=metadatas
     )
 
-    print(f"Ingested {len(documents)} document(s).")
-    print(f"Stored in: {VECTOR_STORE_DIR}")
+    print("\nIngestion completed successfully!")
+    print(f"Total chunks stored: {len(documents)}")
 
+
+# --------------------------------------------------
+# Run
+# --------------------------------------------------
 
 if __name__ == "__main__":
     ingest_documents()

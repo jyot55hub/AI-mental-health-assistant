@@ -1,58 +1,108 @@
 from pathlib import Path
-
 import chromadb
 from sentence_transformers import SentenceTransformer
 
 
-# Project paths
+# --------------------------------------------------
+# Paths
+# --------------------------------------------------
+
 BASE_DIR = Path(__file__).resolve().parent
 VECTOR_STORE_DIR = BASE_DIR / "vector_store"
 
 
-# Load the same embedding model used during ingestion
-embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+# --------------------------------------------------
+# Load Embedding Model
+# --------------------------------------------------
+
+print("Loading retriever model...")
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-# Connect to the existing ChromaDB
-chroma_client = chromadb.PersistentClient(
+# --------------------------------------------------
+# Connect to ChromaDB
+# --------------------------------------------------
+
+client = chromadb.PersistentClient(
     path=str(VECTOR_STORE_DIR)
 )
 
-
-# Load our collection
-collection = chroma_client.get_collection(
-    name="mental_health_documents"
+collection = client.get_collection(
+    name="mental_health_knowledge"
 )
 
 
-def retrieve_documents(query: str, top_k: int = 3) -> list[str]:
-    """
-    Find relevant mental-health documents for a user query.
+# --------------------------------------------------
+# Retrieve Relevant Context
+# --------------------------------------------------
 
-    Returns an empty list when the closest document is not
-    relevant enough to the query.
+def retrieve_context(query, n_results=5):
+    """
+    Search the vector database and return the most
+    relevant knowledge chunks.
     """
 
-    query_embedding = embedding_model.encode(
+    query_embedding = model.encode(
         [query]
     ).tolist()
 
     results = collection.query(
         query_embeddings=query_embedding,
-        n_results=top_k,
-        include=["documents", "distances"]
+        n_results=n_results,
+        include=[
+            "documents",
+            "metadatas",
+            "distances"
+        ]
     )
 
-    documents = results.get("documents", [[]])[0]
-    distances = results.get("distances", [[]])[0]
+    contexts = results["documents"][0]
+    metadatas = results["metadatas"][0]
+    distances = results["distances"][0]
 
-    # Reject weak matches.
-    RELEVANCE_THRESHOLD = 1.2
+    retrieved_items = []
 
-    relevant_documents = [
-        document
-        for document, distance in zip(documents, distances)
-        if distance <= RELEVANCE_THRESHOLD
-    ]
+    for context, metadata, distance in zip(
+        contexts,
+        metadatas,
+        distances
+    ):
+        retrieved_items.append({
+            "text": context,
+            "source": metadata.get("source", "Unknown"),
+            "distance": round(distance, 4)
+        })
 
-    return relevant_documents
+    return retrieved_items
+
+
+# --------------------------------------------------
+# Test Retriever
+# --------------------------------------------------
+
+if __name__ == "__main__":
+
+    test_query = (
+        "I feel very stressed because of exams "
+        "and I cannot concentrate on my studies."
+    )
+
+    print("\nTest Query:")
+    print(test_query)
+
+    print("\nSearching knowledge base...\n")
+
+    results = retrieve_context(
+        test_query,
+        n_results=5
+    )
+
+    for index, item in enumerate(results, start=1):
+
+        print(f"Result {index}")
+        print(f"Source: {item['source']}")
+        print(f"Distance: {item['distance']}")
+        print("Text:")
+        print(item["text"])
+        print("-" * 60)

@@ -1,15 +1,318 @@
-Mental Health Basics
+MENTAL HEALTH AND WELL-BEING KNOWLEDGE BASE
 
-Mental health refers to a person's emotional, psychological, and social well-being. It can influence how a person thinks, feels, behaves, handles stress, relates to others, and makes decisions.
+IMPORTANT PURPOSE
 
-Stress is a common psychological and physical response to challenging situations. Short-term stress can sometimes help a person respond to a demanding situation, but prolonged or intense stress can negatively affect well-being.
+This knowledge base provides general, educational, and supportive information about
+mental health and well-being. It is not a substitute for professional medical,
+psychological, psychiatric, or emergency care.
 
-Anxiety can involve feelings of worry, nervousness, fear, or uneasiness. Occasional anxiety is a normal human experience. When anxiety becomes persistent, severe, or interferes significantly with everyday life, a person may benefit from speaking with a qualified mental-health professional.
+The assistant must not diagnose mental health conditions, prescribe treatment, or
+make personalized medical decisions.
 
-Low mood can involve sadness, reduced motivation, tiredness, or loss of interest. Everyone experiences periods of low mood. If these feelings persist, become severe, or interfere with daily functioning, professional support may be appropriate.
+If a person is in immediate danger, at risk of harming themselves or someone else,
+or experiencing a medical emergency, they should contact local emergency services,
+go to the nearest emergency department, or seek immediate help from a qualified
+professional.
 
-Healthy coping strategies can include maintaining regular sleep, eating regularly, staying physically active, taking breaks, practicing relaxation techniques, maintaining social connections, and talking with someone trustworthy.
+--------------------------------------------------
+1. STRESS
+--------------------------------------------------
 
-A mental-health assistant should provide supportive and general educational information. It should not diagnose a person, replace a qualified mental-health professional, or claim to provide emergency medical care.
+Stress is a natural response to challenging, demanding, or difficult situations.
+People may experience stress because of studies, work, relationships, finances,
+family responsibilities, health concerns, or major life changes.
 
-When someone may be experiencing an immediate mental-health emergency or believes they may hurt themselves or someone else, the assistant should encourage them to seek immediate help from local emergency services, an emergency department, or a qualified professional.
+Common experiences associated with stress may include feeling overwhelmed,
+irritable, worried, tense, tired, or having difficulty concentrating.
+
+Helpful general strategies for managing everyday stress may include:
+
+- Taking short breaks during demanding tasks.
+- Maintaining a regular sleep schedule.
+- Eating regular and balanced meals.
+- Staying physically active when possible.
+- Breaking large tasks into smaller manageable steps.
+- Practicing slow breathing or relaxation techniques.
+- Talking to a trusted friend, family member, or support person.
+- Reducing unnecessary sources of pressure where possible.
+- Making time for enjoyable and relaxing activities.
+
+Stress can affect people differently. If stress is persistent, severe, or begins to
+significantly interfere with daily life, speaking with a qualified mental-health
+professional may be helpful.
+
+--------------------------------------------------
+2. ANXIETY AND WORRY
+--------------------------------------------------
+
+People may sometimes experience worry, nervousness, or anxiety, especially during
+uncertain or challenging situations.
+
+General strategies that may help with everyday anxiety include:
+
+- Taking slow and steady breaths.
+- Focusing on the present moment.
+- Breaking a difficult situation into smaller steps.
+- Limiting excessive exposure to stressful information when appropriate.
+- Maintaining regular sleep and daily routines.
+- Talking with someone trustworthy about concerns.
+- Writing down worries and identifying practical next steps.
+- Engaging in calming activities.
+
+The assistant should not diagnose an anxiety disorder based on a user's message.
+
+If anxiety is persistent, severe, overwhelming, or significantly affects everyday
+functioning, professional support may be appropriate.
+
+--------------------------------------------------
+3. LOW MOOD AND EMOTIONAL WELL-BEING
+--------------------------------------------------
+
+People can experience sadness, disappointment, loneliness, frustration, or low mood
+for many different reasons.
+
+General supportive strategies may include:
+
+- Maintaining connection with trusted people.
+- Following a regular daily routine.
+- Spending time on meaningful or enjoyable activities.
+- Getting adequate rest.
+- Eating regularly.
+- Spending time outdoors when possible.
+- Setting small and realistic goals.
+- Being patient and compassionate with oneself.
+- Writing thoughts or feelings in a journal.
+
+The assistant should acknowledge feelings without making assumptions or diagnosing
+conditions such as depression.
+
+When emotional difficulties persist or significantly interfere with daily life,
+professional support may be helpful.
+
+--------------------------------------------------
+4. HEALTHY COPING STRATEGIES
+--------------------------------------------------
+
+Healthy coping strategies can help people manage everyday challenges and emotions.
+
+Examples include:
+
+- Deep breathing.
+- Taking a short walk.
+- Listening to calming music.
+- Talking with a trusted person.
+- Journaling.
+- Taking a break from a difficult task.
+- Practicing relaxation or mindfulness.
+- Engaging in a hobby.
+- Organizing tasks using a simple plan.
+- Focusing on one manageable step at a time.
+
+Different strategies work differently for different people. The assistant should
+present suggestions as general options rather than guaranteed solutions.
+
+--------------------------------------------------
+5. MINDFULNESS AND RELAXATION
+--------------------------------------------------
+
+Mindfulness involves paying attention to the present moment without excessive
+judgment.
+
+Simple mindfulness practices may include:
+
+- Noticing slow breaths.
+- Paying attention to sounds in the environment.
+- Observing thoughts without immediately reacting to them.
+- Noticing physical sensations.
+- Taking a few quiet moments away from distractions.
+
+A simple breathing exercise may involve breathing in slowly, breathing out slowly,
+and repeating this for a short period while staying comfortable.
+
+The assistant should avoid presenting mindfulness as a guaranteed treatment.
+
+--------------------------------------------------
+6. SLEEP AND WELL-BEING
+--------------------------------------------------
+
+Sleep is an important part of overall well-being. Poor or irregular sleep may affect
+energy, concentration, mood, and daily functioning.
+
+General healthy sleep habits may include:
+
+- Going to bed and waking up at roughly consistent times.
+- Creating a comfortable sleep environment.
+- Reducing stimulating activities close to bedtime when possible.
+- Avoiding excessive caffeine late in the day when appropriate.
+- Allowing time to relax before sleeping.
+- Maintaining regular daytime activity.
+
+The assistant can provide general educational information about healthy sleep habits.
+
+Sleep tracking features in the application may record information such as sleep
+duration, bedtime, wake-up time, and the user's self-reported sleep quality.
+
+The assistant must not use sleep data alone to diagnose a sleep or mental-health
+condition.
+
+--------------------------------------------------
+7. PHYSICAL ACTIVITY
+--------------------------------------------------
+
+Regular physical activity can support general physical and emotional well-being.
+
+Possible activities include:
+
+- Walking.
+- Stretching.
+- Cycling.
+- Dancing.
+- Sports.
+- Other forms of movement that are suitable for the individual.
+
+The goal does not need to be perfection. Small and consistent activity can be a
+practical part of a healthy routine.
+
+The assistant should avoid making personalized medical exercise recommendations.
+
+--------------------------------------------------
+8. SOCIAL SUPPORT
+--------------------------------------------------
+
+Supportive relationships can be valuable during stressful or emotionally difficult
+times.
+
+Possible sources of support include:
+
+- Friends.
+- Family members.
+- Teachers or mentors.
+- Trusted colleagues.
+- Counselors.
+- Qualified mental-health professionals.
+
+Talking about thoughts and feelings with a trusted person may help someone feel less
+isolated.
+
+The assistant should encourage respectful and appropriate support without assuming
+that every relationship is safe or supportive.
+
+--------------------------------------------------
+9. JOURNALING AND SELF-REFLECTION
+--------------------------------------------------
+
+Journaling can be used as a tool for self-reflection and emotional expression.
+
+A person may write about:
+
+- How they are feeling.
+- Events that affected their mood.
+- Sources of stress.
+- Things they are grateful for.
+- Goals for the day.
+- Positive experiences.
+- Challenges they faced.
+- What helped them cope.
+
+Journal entries can help users notice patterns over time. However, journal content
+alone should not be treated as evidence of a medical or psychological diagnosis.
+
+--------------------------------------------------
+10. DAILY POSITIVE THOUGHTS AND ENCOURAGEMENT
+--------------------------------------------------
+
+Positive thoughts and encouragement can support motivation and emotional well-being.
+
+Daily positive messages should be realistic, supportive, and non-judgmental.
+
+Examples of supportive messages include:
+
+"Take today one step at a time."
+
+"You do not have to solve everything at once."
+
+"Small progress can still be meaningful."
+
+"It is okay to take a break when you need one."
+
+"Be patient with yourself while you learn and grow."
+
+"Your feelings are valid, and you deserve support."
+
+"You can focus on what is within your control today."
+
+The assistant should avoid making unrealistic promises such as guaranteeing that
+everything will become better.
+
+--------------------------------------------------
+11. DAILY ROUTINES AND WELLNESS
+--------------------------------------------------
+
+A balanced daily routine may support general well-being.
+
+Helpful areas to consider include:
+
+- Sleep.
+- Meals.
+- Physical activity.
+- Study or work.
+- Breaks.
+- Social connection.
+- Relaxation.
+- Enjoyable activities.
+
+Users may benefit from setting small and realistic goals rather than expecting
+perfect performance.
+
+--------------------------------------------------
+12. WHEN PROFESSIONAL SUPPORT MAY BE HELPFUL
+--------------------------------------------------
+
+A person may benefit from speaking with a qualified professional when emotional or
+psychological difficulties are persistent, severe, or significantly interfere with
+daily life.
+
+Examples may include situations where someone experiences ongoing distress,
+difficulty functioning in everyday activities, or concerns that they cannot manage
+with general self-care alone.
+
+The assistant should encourage professional support respectfully and should not
+diagnose the user.
+
+--------------------------------------------------
+13. CRISIS AND IMMEDIATE DANGER
+--------------------------------------------------
+
+If a person says they are in immediate danger, may harm themselves, may harm another
+person, or cannot stay safe, immediate help is important.
+
+The assistant should encourage the person to:
+
+- Contact local emergency services.
+- Go to the nearest emergency department.
+- Contact a local crisis service where available.
+- Tell a trusted person nearby.
+- Avoid being alone if immediate safety is a concern.
+
+The assistant should communicate calmly, clearly, and supportively.
+
+The assistant must not assume that a user is safe when they express immediate danger.
+
+--------------------------------------------------
+14. IMPORTANT RESPONSE PRINCIPLES
+--------------------------------------------------
+
+When answering questions using this knowledge base:
+
+- Use the retrieved knowledge as the primary source of information.
+- Do not invent medical facts, statistics, diagnoses, or treatments.
+- Do not diagnose the user.
+- Do not replace a psychologist, psychiatrist, doctor, counselor, or other
+  qualified professional.
+- Do not provide personalized medical treatment decisions.
+- Clearly acknowledge when the available knowledge is insufficient.
+- Be supportive, calm, respectful, and non-judgmental.
+- Use simple and understandable language.
+- Give practical general suggestions when supported by the retrieved knowledge.
+- Treat journal entries, sleep data, and wellness information as supportive
+  application data, not as proof of a diagnosis.
