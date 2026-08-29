@@ -25,6 +25,81 @@ def get_rag_context(user_query):
     context = "\n\n---\n\n".join(context_parts)
 
     return context
+def is_mental_health_related(user_message):
+    """
+    Checks whether the user's message is related to
+    mental health, emotional well-being, or student well-being.
+    """
+
+    message = user_message.lower()
+
+    mental_health_keywords = [
+        "mental health",
+        "mental wellbeing",
+        "mental well-being",
+        "wellbeing",
+        "well-being",
+
+        "stress",
+        "stressed",
+        "anxiety",
+        "anxious",
+        "panic",
+        "worried",
+        "worry",
+
+        "depression",
+        "depressed",
+        "sad",
+        "sadness",
+        "lonely",
+        "loneliness",
+        "alone",
+
+        "emotion",
+        "emotional",
+        "feel",
+        "feeling",
+        "feelings",
+        "overwhelmed",
+        "upset",
+
+        "sleep",
+        "insomnia",
+        "tired",
+        "fatigue",
+
+        "burnout",
+        "burned out",
+        "burnt out",
+
+        "motivation",
+        "unmotivated",
+        "procrastination",
+        "procrastinate",
+
+        "academic stress",
+        "exam stress",
+        "exam anxiety",
+        "study stress",
+        "college stress",
+        "pressure",
+
+        "concentration",
+        "focus",
+        "can't focus",
+        "cannot focus",
+
+        "self esteem",
+        "confidence",
+        "relationship",
+        "coping",
+        "therapy",
+        "counseling",
+        "counsellor"
+    ]
+
+    return any(keyword in message for keyword in mental_health_keywords)
 
 
 def assistant_response(user_message):
@@ -36,11 +111,25 @@ def assistant_response(user_message):
             "You deserve immediate support. Please reach out to someone you trust "
             "and contact local emergency or crisis services if you are in immediate danger."
         )
+    if not is_mental_health_related(user_message):
+        return (
+            "I'm designed specifically to provide supportive and educational "
+            "information about mental health and well-being. "
+            "I can't help with general knowledge or unrelated questions. "
+            "You can ask me about topics such as stress, anxiety, emotions, "
+            "sleep, academic pressure, motivation, or other mental health concerns."
+        )
 
     rag_context = get_rag_context(user_message)
 
     prompt = f"""
 You are a supportive AI mental health assistant.
+IMPORTANT:
+You are strictly a mental health and well-being assistant.
+
+Do not answer questions about unrelated general knowledge topics such as geography, programming, mathematics, politics, sports, history, or trivia.
+
+If a user asks an unrelated question, politely explain that you can only assist with mental health and well-being topics.
 
 Use the following retrieved information when it is relevant:
 
