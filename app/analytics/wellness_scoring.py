@@ -1,7 +1,7 @@
 """
 Wellness Scoring Engine
 
-This module calculates a project-specific Wellness Indicator Score (0-100).
+This module calculates a project-specific Wellness Indicator Score.
 
 IMPORTANT:
 This score is NOT a medical diagnosis or a clinically validated
@@ -11,7 +11,7 @@ tracking and personalized wellness recommendations.
 
 
 # ============================================================
-# WELLNESS SCORING
+# SLEEP SCORING
 # ============================================================
 
 def calculate_sleep_score(sleep_hours):
@@ -26,6 +26,7 @@ def calculate_sleep_score(sleep_hours):
 
     try:
         sleep_hours = float(sleep_hours)
+
     except (ValueError, TypeError):
         return None
 
@@ -46,96 +47,139 @@ def calculate_sleep_score(sleep_hours):
 
 
 # ============================================================
-# QUESTIONNAIRE SCORE
+# QUESTIONNAIRE SCORING
 # ============================================================
 
 def calculate_questionnaire_score(
     mood=None,
+    stress=None,
+    energy=None,
+    physical_activity=None,
+    focus=None,
+    social=None,
+    self_care=None,
     stress_level=None,
     energy_level=None
 ):
     """
     Calculate questionnaire wellness score.
 
-    Expected input scale:
-    mood: 1 to 5
-    stress_level: 1 to 5
-    energy_level: 1 to 5
+    There are 7 wellness questions.
 
-    Higher mood and energy improve wellness.
-    Higher stress reduces wellness.
+    Each answer should be between 1 and 5.
 
     Returns a score from 0 to 60.
+
+    Score conversion:
+
+    1 = minimum wellness value
+    5 = maximum wellness value
+
+    Therefore:
+
+    All answers = 1 -> 0/60
+    All answers = 5 -> 60/60
+
+    stress_level and energy_level are supported
+    for backward compatibility with existing code.
     """
 
-    scores = []
+    # --------------------------------------------------------
+    # BACKWARD COMPATIBILITY
+    # --------------------------------------------------------
 
-    # Mood contribution (0-20)
-    if mood is not None:
+    if stress is None:
+        stress = stress_level
+
+    if energy is None:
+        energy = energy_level
+
+
+    # --------------------------------------------------------
+    # COLLECT ANSWERS
+    # --------------------------------------------------------
+
+    answers = [
+        mood,
+        stress,
+        energy,
+        physical_activity,
+        focus,
+        social,
+        self_care
+    ]
+
+
+    valid_scores = []
+
+
+    # --------------------------------------------------------
+    # VALIDATE AVAILABLE ANSWERS
+    # --------------------------------------------------------
+
+    for answer in answers:
+
+        if answer is None:
+            continue
 
         try:
-            mood = float(mood)
 
-            mood = max(1, min(5, mood))
+            answer = float(answer)
 
-            mood_score = ((mood - 1) / 4) * 20
-
-            scores.append(mood_score)
-
-        except (ValueError, TypeError):
-            pass
-
-
-    # Stress contribution (0-20)
-    if stress_level is not None:
-
-        try:
-            stress_level = float(stress_level)
-
-            stress_level = max(
+            # Keep values within questionnaire scale
+            answer = max(
                 1,
-                min(5, stress_level)
+                min(5, answer)
             )
 
-            # Lower stress = better score
-            stress_score = (
-                (5 - stress_level) / 4
-            ) * 20
-
-            scores.append(stress_score)
+            valid_scores.append(answer)
 
         except (ValueError, TypeError):
-            pass
+
+            continue
 
 
-    # Energy contribution (0-20)
-    if energy_level is not None:
+    # --------------------------------------------------------
+    # NO VALID ANSWERS
+    # --------------------------------------------------------
 
-        try:
-            energy_level = float(energy_level)
+    if not valid_scores:
 
-            energy_level = max(
-                1,
-                min(5, energy_level)
-            )
-
-            energy_score = (
-                (energy_level - 1) / 4
-            ) * 20
-
-            scores.append(energy_score)
-
-        except (ValueError, TypeError):
-            pass
-
-
-    if not scores:
         return None
 
-    # Scale available answers fairly
-    average_score = sum(scores) / len(scores)
 
-    return average_score * 3
+    # --------------------------------------------------------
+    # CALCULATE AVERAGE ANSWER
+    # --------------------------------------------------------
+
+    average_answer = (
+        sum(valid_scores)
+        / len(valid_scores)
+    )
+
+
+    # --------------------------------------------------------
+    # CONVERT 1-5 SCALE TO 0-60 SCALE
+    # --------------------------------------------------------
+    #
+    # Formula:
+    #
+    # ((value - minimum) / (maximum - minimum)) * 60
+    #
+    # 1 -> 0
+    # 5 -> 60
+    #
+
+    questionnaire_score = (
+        (average_answer - 1)
+        / (5 - 1)
+    ) * 60
+
+
+    return round(
+        questionnaire_score,
+        2
+    )
 
 
 # ============================================================
@@ -145,6 +189,12 @@ def calculate_questionnaire_score(
 def calculate_wellness_score(
     sleep_hours=None,
     mood=None,
+    stress=None,
+    energy=None,
+    physical_activity=None,
+    focus=None,
+    social=None,
+    self_care=None,
     stress_level=None,
     energy_level=None
 ):
@@ -152,39 +202,68 @@ def calculate_wellness_score(
     Calculate a Wellness Indicator Score from 0 to 100.
 
     Components:
-    - Sleep: 25 points
-    - Daily questionnaire: 60 points
 
-    If some information is unavailable,
-    the score is calculated only from available information.
+    - Sleep: maximum 25 points
+    - Daily Questionnaire: maximum 60 points
+
+    The final score is normalized to 0-100 based
+    on the available information.
 
     NOTE:
-    This is a project-specific, non-diagnostic wellness indicator.
+    This is a project-specific, non-diagnostic
+    wellness indicator.
     """
 
     component_scores = {}
 
-    # Sleep
+
+    # --------------------------------------------------------
+    # BACKWARD COMPATIBILITY
+    # --------------------------------------------------------
+
+    if stress is None:
+        stress = stress_level
+
+    if energy is None:
+        energy = energy_level
+
+
+    # --------------------------------------------------------
+    # SLEEP SCORE
+    # --------------------------------------------------------
+
     sleep_score = calculate_sleep_score(
         sleep_hours
     )
 
+
     if sleep_score is not None:
 
         component_scores["sleep"] = {
-            "score": round(sleep_score, 2),
+            "score": round(
+                sleep_score,
+                2
+            ),
             "maximum": 25
         }
 
 
-    # Questionnaire
+    # --------------------------------------------------------
+    # QUESTIONNAIRE SCORE
+    # --------------------------------------------------------
+
     questionnaire_score = (
         calculate_questionnaire_score(
-            mood,
-            stress_level,
-            energy_level
+            mood=mood,
+            stress=stress,
+            energy=energy,
+            physical_activity=physical_activity,
+            focus=focus,
+            social=social,
+            self_care=self_care
         )
     )
+
 
     if questionnaire_score is not None:
 
@@ -197,7 +276,10 @@ def calculate_wellness_score(
         }
 
 
-    # No data
+    # --------------------------------------------------------
+    # NO DATA
+    # --------------------------------------------------------
+
     if not component_scores:
 
         return {
@@ -211,19 +293,25 @@ def calculate_wellness_score(
         }
 
 
-    # Calculate percentage
+    # --------------------------------------------------------
+    # CALCULATE FINAL SCORE
+    # --------------------------------------------------------
+
     total_score = sum(
         item["score"]
         for item in component_scores.values()
     )
+
 
     maximum_score = sum(
         item["maximum"]
         for item in component_scores.values()
     )
 
+
     wellness_score = (
-        total_score / maximum_score
+        total_score
+        / maximum_score
     ) * 100
 
 
@@ -238,13 +326,17 @@ def calculate_wellness_score(
     )
 
 
+    # --------------------------------------------------------
+    # RETURN RESULT
+    # --------------------------------------------------------
+
     return {
         "wellness_score": wellness_score,
         "category": category,
         "components": component_scores,
         "message": (
-            "This is a non-diagnostic wellness "
-            "indicator for educational wellness tracking."
+            "This is a project-specific, non-diagnostic "
+            "wellness indicator for educational wellness tracking."
         )
     }
 
@@ -259,54 +351,81 @@ def get_wellness_category(score):
     """
 
     if score is None:
+
         return "Insufficient Data"
 
     elif score >= 75:
+
         return "Good"
 
     elif score >= 50:
+
         return "Moderate"
 
     else:
+
         return "Needs Attention"
 
 
 # ============================================================
-# TESTING
+# TEST PROGRAM
 # ============================================================
 
 if __name__ == "__main__":
 
     example_user = calculate_wellness_score(
+
         sleep_hours=7.5,
+
         mood=4,
-        stress_level=2,
-        energy_level=4
+
+        stress=4,
+
+        energy=3,
+
+        physical_activity=3,
+
+        focus=4,
+
+        social=3,
+
+        self_care=4
     )
 
+
     print("\nWELLNESS SCORING TEST")
-    print("=" * 50)
+
+    print("=" * 55)
+
 
     print(
         f"Wellness Score: "
         f"{example_user['wellness_score']}/100"
     )
 
+
     print(
         f"Category: "
         f"{example_user['category']}"
     )
 
+
     print("\nComponent Scores:")
+
 
     for component, data in (
         example_user["components"].items()
     ):
+
         print(
             f"{component.title()}: "
             f"{data['score']}/"
             f"{data['maximum']}"
         )
 
+
     print("\nNote:")
-    print(example_user["message"])
+
+    print(
+        example_user["message"]
+    )
