@@ -5,10 +5,11 @@ This module connects:
 
 1. Daily Wellness Questionnaire
 2. Questionnaire Scoring
-3. Sleep Scoring
-4. Overall Wellness Indicator
-5. Wellness Category
-6. Personalized Recommendations
+3. Sleep Tracking
+4. Guided Meditation Tracking
+5. Overall Wellness Indicator
+6. Wellness Category
+7. Personalized Recommendations
 
 IMPORTANT:
 This workflow is designed for educational wellness tracking only.
@@ -40,10 +41,11 @@ from app.analytics.recommendations import (
 
 def run_wellness_workflow(
     answers,
-    sleep_hours=None
+    sleep_hours=None,
+    meditation_minutes=0
 ):
     """
-    Run the complete wellness analytics workflow.
+    Run the complete daily wellness analytics workflow.
 
     Parameters
     ----------
@@ -59,53 +61,30 @@ def run_wellness_workflow(
         social_connection
         self_care
 
-    sleep_hours : float
+    sleep_hours : float, optional
 
         Number of hours slept.
 
+    meditation_minutes : float, optional
+
+        Number of minutes spent meditating.
+
+        Meditation contribution is capped at 13 minutes
+        for the daily wellness score.
+
     Returns
     -------
-    Dictionary containing:
+    dict
 
-    - Questionnaire score
-    - Overall wellness score
-    - Wellness category
-    - Component scores
-    - Personalized recommendations
+        Dictionary containing:
+
+        - Questionnaire score
+        - Overall wellness score
+        - Wellness category
+        - Component scores
+        - Personalized recommendations
+        - Disclaimer
     """
-
-
-    # ========================================================
-    # VALIDATE ANSWERS OBJECT
-    # ========================================================
-
-    if not isinstance(
-        answers,
-        dict
-    ):
-        raise ValueError(
-            "Answers must be provided as a dictionary."
-        )
-
-
-    # ========================================================
-    # BACKWARD COMPATIBILITY
-    # ========================================================
-
-    # Older code may use "social".
-    # Convert it to the official questionnaire key
-    # "social_connection".
-
-    if (
-        "social_connection" not in answers
-        and "social" in answers
-    ):
-
-        answers = answers.copy()
-
-        answers["social_connection"] = (
-            answers["social"]
-        )
 
 
     # ========================================================
@@ -160,34 +139,54 @@ def run_wellness_workflow(
 
     mood = answers["mood"]
 
-
     stress_level = (
         answers["stress_level"]
     )
-
 
     energy_level = (
         answers["energy_level"]
     )
 
-
     physical_activity = (
         answers["physical_activity"]
     )
-
 
     focus = (
         answers["focus"]
     )
 
-
     social_connection = (
         answers["social_connection"]
     )
 
-
     self_care = (
         answers["self_care"]
+    )
+
+
+    # ========================================================
+    # VALIDATE MEDITATION MINUTES
+    # ========================================================
+
+    if meditation_minutes is None:
+
+        meditation_minutes = 0
+
+
+    if meditation_minutes < 0:
+
+        raise ValueError(
+            "Meditation minutes cannot be negative."
+        )
+
+
+    # ========================================================
+    # CAP MEDITATION AT 13 MINUTES
+    # ========================================================
+
+    scored_meditation_minutes = min(
+        meditation_minutes,
+        13
     )
 
 
@@ -200,13 +199,19 @@ def run_wellness_workflow(
 
             sleep_hours=sleep_hours,
 
+            meditation_minutes=(
+                scored_meditation_minutes
+            ),
+
             mood=mood,
 
             stress_level=stress_level,
 
             energy_level=energy_level,
 
-            physical_activity=physical_activity,
+            physical_activity=(
+                physical_activity
+            ),
 
             focus=focus,
 
@@ -220,7 +225,7 @@ def run_wellness_workflow(
 
 
     # ========================================================
-    # CONVERT STRESS SCALE FOR RECOMMENDATIONS
+    # CONVERT STRESS SCALE
     # ========================================================
 
     """
@@ -247,22 +252,9 @@ def run_wellness_workflow(
     Questionnaire 5 -> Recommendation 1
     """
 
-    try:
-
-        stress_value = float(
-            stress_level
-        )
-
-        recommendation_stress_level = (
-            6 - stress_value
-        )
-
-    except (
-        ValueError,
-        TypeError
-    ):
-
-        recommendation_stress_level = None
+    recommendation_stress_level = (
+        6 - stress_level
+    )
 
 
     # ========================================================
@@ -278,6 +270,10 @@ def run_wellness_workflow(
 
             stress_level=(
                 recommendation_stress_level
+            ),
+
+            meditation_minutes=(
+                meditation_minutes
             )
         )
     )
@@ -304,14 +300,18 @@ def run_wellness_workflow(
 
         "components":
             wellness_result.get(
-                "components",
-                {}
+                "components"
             ),
+
+        "meditation_minutes":
+            meditation_minutes,
+
+        "scored_meditation_minutes":
+            scored_meditation_minutes,
 
         "recommendations":
             recommendation_result.get(
-                "recommendations",
-                []
+                "recommendations"
             ),
 
         "disclaimer":
@@ -333,13 +333,17 @@ def display_wellness_result(
     """
 
 
-    print("\n" + "=" * 60)
-
     print(
-        "COMPLETE WELLNESS ANALYTICS RESULT"
+        "\n" + "=" * 60
     )
 
-    print("=" * 60)
+    print(
+        "COMPLETE DAILY WELLNESS ANALYTICS RESULT"
+    )
+
+    print(
+        "=" * 60
+    )
 
 
     # ========================================================
@@ -369,6 +373,22 @@ def display_wellness_result(
     print(
         f"Wellness Category: "
         f"{result['category']}"
+    )
+
+
+    # ========================================================
+    # MEDITATION
+    # ========================================================
+
+    print(
+        f"\nMeditation Completed: "
+        f"{result['meditation_minutes']} minutes"
+    )
+
+    print(
+        f"Meditation Counted for Score: "
+        f"{result['scored_meditation_minutes']} minutes "
+        f"(maximum daily target: 13 minutes)"
     )
 
 
@@ -436,12 +456,8 @@ def display_wellness_result(
         "\nDisclaimer:"
     )
 
-
     print(
-        result.get(
-            "disclaimer",
-            "This wellness result is for educational purposes only."
-        )
+        result["disclaimer"]
     )
 
 
@@ -526,6 +542,13 @@ if __name__ == "__main__":
 
 
     # ========================================================
+    # SAMPLE MEDITATION
+    # ========================================================
+
+    sample_meditation_minutes = 13
+
+
+    # ========================================================
     # RUN COMPLETE WORKFLOW
     # ========================================================
 
@@ -536,6 +559,10 @@ if __name__ == "__main__":
 
             sleep_hours=(
                 sample_sleep_hours
+            ),
+
+            meditation_minutes=(
+                sample_meditation_minutes
             )
         )
     )

@@ -73,6 +73,7 @@ def get_sleep_recommendations(sleep_hours):
 
     try:
         sleep_hours = float(sleep_hours)
+
     except (ValueError, TypeError):
         return recommendations
 
@@ -116,6 +117,7 @@ def get_stress_recommendations(stress_level):
 
     try:
         stress_level = float(stress_level)
+
     except (ValueError, TypeError):
         return recommendations
 
@@ -143,26 +145,94 @@ def get_stress_recommendations(stress_level):
 
 
 # ============================================================
+# MEDITATION-BASED RECOMMENDATIONS
+# ============================================================
+
+def get_meditation_recommendations(meditation_minutes):
+    """
+    Return recommendations based on daily meditation duration.
+
+    The project's daily meditation target is 13 minutes.
+    Additional wellness points are capped at 13 minutes.
+    """
+
+    recommendations = []
+
+    if meditation_minutes is None:
+
+        recommendations.append(
+            "Consider trying a short guided breathing or meditation session as part of your daily wellness routine."
+        )
+
+        return recommendations
+
+    try:
+        meditation_minutes = float(meditation_minutes)
+
+    except (ValueError, TypeError):
+
+        return recommendations
+
+    if meditation_minutes <= 0:
+
+        recommendations.append(
+            "Consider starting with a short guided breathing or meditation session."
+        )
+
+    elif meditation_minutes < 13:
+
+        remaining_minutes = 13 - meditation_minutes
+
+        recommendations.append(
+            f"You completed {meditation_minutes:g} minutes of meditation today. "
+            f"You can continue for about {remaining_minutes:g} more minutes to reach the daily 13-minute wellness target."
+        )
+
+    else:
+
+        recommendations.append(
+            "You completed the daily 13-minute meditation wellness target. Keep following the practices that help you relax and recharge."
+        )
+
+    return recommendations
+
+
+# ============================================================
 # MAIN RECOMMENDATION FUNCTION
 # ============================================================
 
 def generate_recommendations(
     wellness_result,
     sleep_hours=None,
-    stress_level=None
+    stress_level=None,
+    meditation_minutes=None
 ):
     """
     Generate personalized wellness recommendations.
 
-    Parameters:
-    wellness_result: Dictionary returned by
-    calculate_wellness_score().
+    Parameters
+    ----------
+    wellness_result : dict
+        Dictionary returned by calculate_wellness_score().
 
-    Returns:
-    Dictionary containing category and recommendations.
+    sleep_hours : float
+        Number of hours slept.
+
+    stress_level : float
+        Stress level on a scale where higher means higher stress.
+
+    meditation_minutes : float
+        Number of minutes of meditation completed today.
+
+    Returns
+    -------
+    dict
+        Dictionary containing category, score, recommendations,
+        and disclaimer.
     """
 
     if not wellness_result:
+
         return {
             "category": "Insufficient Data",
             "recommendations": [
@@ -196,6 +266,13 @@ def generate_recommendations(
         get_stress_recommendations(stress_level)
     )
 
+    # Meditation recommendations
+    recommendations.extend(
+        get_meditation_recommendations(
+            meditation_minutes
+        )
+    )
+
     # Remove duplicates while preserving order
     recommendations = list(
         dict.fromkeys(recommendations)
@@ -203,10 +280,13 @@ def generate_recommendations(
 
     return {
         "category": category,
+
         "wellness_score": wellness_result.get(
             "wellness_score"
         ),
+
         "recommendations": recommendations,
+
         "disclaimer": (
             "These recommendations are general wellness suggestions "
             "for educational purposes and are not a medical diagnosis "
@@ -221,26 +301,28 @@ def generate_recommendations(
 
 if __name__ == "__main__":
 
-    # Import wellness scoring function
-    from wellness_scoring import calculate_wellness_score
-
-
-    # Example user
-    wellness_result = calculate_wellness_score(
-        sleep_hours=5.5,
-        mood=3,
-        stress_level=4,
-        energy_level=3
+    from app.analytics.wellness_scoring import (
+        calculate_wellness_score
     )
 
+    wellness_result = calculate_wellness_score(
+        sleep_hours=7.5,
+        mood=4,
+        stress_level=3,
+        energy_level=4,
+        physical_activity=3,
+        focus=4,
+        social=3,
+        self_care=4,
+        meditation_minutes=13
+    )
 
-    # Generate recommendations
     result = generate_recommendations(
         wellness_result,
-        sleep_hours=5.5,
-        stress_level=4
+        sleep_hours=7.5,
+        stress_level=3,
+        meditation_minutes=13
     )
-
 
     print("\nPERSONALIZED WELLNESS RECOMMENDATIONS")
     print("=" * 55)
