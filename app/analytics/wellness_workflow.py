@@ -225,59 +225,37 @@ def run_wellness_workflow(
 
 
     # ========================================================
-    # CONVERT STRESS SCALE
-    # ========================================================
-
-    """
-    Questionnaire stress scale:
-
-    1 = Very High Stress
-    2 = High Stress
-    3 = Moderate Stress
-    4 = Low Stress
-    5 = Very Low Stress
-
-
-    Recommendation engine expects:
-
-    Higher number = Higher Stress
-
-
-    Therefore:
-
-    Questionnaire 1 -> Recommendation 5
-    Questionnaire 2 -> Recommendation 4
-    Questionnaire 3 -> Recommendation 3
-    Questionnaire 4 -> Recommendation 2
-    Questionnaire 5 -> Recommendation 1
-    """
-
-    recommendation_stress_level = (
-        6 - stress_level
-    )
-
-
-    # ========================================================
     # GENERATE RECOMMENDATIONS
     # ========================================================
 
     recommendation_result = (
         generate_recommendations(
 
-            wellness_result,
+            category=wellness_result.get(
+                "category"
+            ),
+
+            wellness_score=wellness_result.get(
+                "wellness_score"
+            ),
 
             sleep_hours=sleep_hours,
 
-            stress_level=(
-                recommendation_stress_level
-            ),
+            # The questionnaire and recommendation engine
+            # now use the same stress scale:
+            #
+            # 1 = Very High Stress
+            # 2 = High Stress
+            # 3 = Moderate Stress
+            # 4 = Low Stress
+            # 5 = Very Low Stress
+            stress_level=stress_level,
 
             meditation_minutes=(
                 meditation_minutes
             )
         )
     )
-
 
     # ========================================================
     # RETURN COMPLETE RESULT

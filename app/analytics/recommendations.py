@@ -1,352 +1,269 @@
+
 """
-Personalized Wellness Recommendation Engine
+Recommendation engine for the AI-Powered Mental Health Assistant.
 
-This module provides general wellness recommendations based on a
-user's wellness indicator and available wellness information.
+Generates personalized wellness recommendations based on:
+- Overall wellness category
+- Sleep duration
+- Stress level from the questionnaire
+- Meditation duration
 
-IMPORTANT:
-Recommendations are educational and supportive only.
-They are NOT medical diagnosis or professional treatment advice.
+Stress scale used by the project:
+    1 = Very High Stress
+    2 = High Stress
+    3 = Moderate Stress
+    4 = Low Stress
+    5 = Very Low St  ress
+
+Meditation target:
+    13 minutes per day.
+    Meditation beyond 13 minutes does not provide additional
+    wellness-score points.
 """
 
-
-# ============================================================
-# CATEGORY-BASED RECOMMENDATIONS
-# ============================================================
 
 def get_category_recommendations(category):
     """
-    Return general recommendations based on wellness category.
+    Return recommendations based on the overall wellness category.
     """
 
-    recommendations = []
-
     if category == "Good":
-
-        recommendations.extend([
-            "Maintain your current healthy wellness routine.",
-            "Continue following a regular sleep schedule.",
-            "Take regular breaks during study or work.",
-            "Continue activities that help you relax and recharge."
-        ])
+        return [
+            "Keep maintaining your healthy daily habits.",
+            "Continue getting adequate sleep and taking regular breaks.",
+            "Continue using activities that support your mental wellbeing."
+        ]
 
     elif category == "Moderate":
-
-        recommendations.extend([
-            "Try to maintain a more consistent daily routine.",
-            "Take short breaks when you feel stressed or overwhelmed.",
-            "Prioritize adequate sleep and rest.",
-            "Consider relaxation activities such as breathing exercises or mindfulness."
-        ])
+        return [
+            "Try to maintain a consistent sleep schedule.",
+            "Take regular breaks during study or work.",
+            "Consider spending a few minutes each day on relaxation or meditation.",
+            "Pay attention to changes in your stress and wellbeing."
+        ]
 
     elif category == "Needs Attention":
-
-        recommendations.extend([
-            "Consider taking additional time for rest and self-care.",
-            "Try breaking large tasks into smaller manageable steps.",
-            "Talk with a trusted friend, family member, mentor, or counselor.",
-            "If distress is persistent or worsening, consider seeking support from a qualified mental health professional."
-        ])
+        return [
+            "Give extra attention to your mental wellbeing today.",
+            "Try to maintain a regular sleep routine.",
+            "Consider relaxation, breathing exercises, or guided meditation.",
+            "Talk to someone you trust if you feel overwhelmed.",
+            "If difficulties persist or significantly affect daily life, consider seeking support from a qualified mental-health professional."
+        ]
 
     else:
+        return [
+            "There is not enough information to provide a personalized recommendation yet."
+        ]
 
-        recommendations.append(
-            "Provide more wellness information to receive personalized suggestions."
-        )
-
-    return recommendations
-
-
-# ============================================================
-# SLEEP-BASED RECOMMENDATIONS
-# ============================================================
 
 def get_sleep_recommendations(sleep_hours):
     """
     Return recommendations based on sleep duration.
+
+    Args:
+        sleep_hours: Sleep duration in hours. Can be int, float,
+                     numeric string, or None.
     """
 
-    recommendations = []
-
     if sleep_hours is None:
-        return recommendations
+        return [
+            "Track your sleep duration so that your sleep pattern can be considered in your wellness recommendations."
+        ]
 
     try:
         sleep_hours = float(sleep_hours)
-
-    except (ValueError, TypeError):
-        return recommendations
+    except (TypeError, ValueError):
+        return [
+            "Track your sleep duration using a valid number of hours."
+        ]
 
     if sleep_hours < 6:
+        return [
+            "Try to get more sleep tonight. Consistently getting too little sleep can affect your energy, concentration, and wellbeing."
+        ]
 
-        recommendations.append(
-            "Try to prioritize adequate sleep and maintain a consistent sleep schedule."
-        )
-
-    elif sleep_hours > 10:
-
-        recommendations.append(
-            "Very long sleep patterns can sometimes be worth monitoring. Consider maintaining a consistent routine."
-        )
+    elif sleep_hours <= 10:
+        return [
+            "Your sleep duration is within a generally healthy range. Try to maintain a consistent sleep schedule."
+        ]
 
     else:
+        return [
+            "You slept for more than 10 hours. If this happens frequently, pay attention to your sleep pattern and how rested you feel."
+        ]
 
-        recommendations.append(
-            "Your reported sleep duration is within a generally healthy range for many adults."
-        )
-
-    return recommendations
-
-
-# ============================================================
-# STRESS-BASED RECOMMENDATIONS
-# ============================================================
 
 def get_stress_recommendations(stress_level):
     """
-    Return recommendations based on reported stress level.
+    Return recommendations based on the project's questionnaire
+    stress scale.
 
-    Expected scale: 1 to 5
-    Higher number = higher stress.
+    Project questionnaire scale:
+        1 = Very High Stress
+        2 = High Stress
+        3 = Moderate Stress
+        4 = Low Stress
+        5 = Very Low Stress
+
+    IMPORTANT:
+        Lower values indicate higher stress.
     """
 
-    recommendations = []
-
     if stress_level is None:
-        return recommendations
+        return [
+            "Complete the stress-related questionnaire so that stress-based recommendations can be personalized."
+        ]
 
     try:
-        stress_level = float(stress_level)
+        stress_level = int(stress_level)
+    except (TypeError, ValueError):
+        return [
+            "Use a valid stress level from 1 to 5."
+        ]
 
-    except (ValueError, TypeError):
-        return recommendations
+    if stress_level < 1 or stress_level > 5:
+        return [
+            "Use a stress level between 1 and 5."
+        ]
 
-    if stress_level >= 4:
+    # 1 = Very High Stress, 2 = High Stress
+    if stress_level <= 2:
+        return [
+            "Your responses indicate a higher level of stress. Consider taking a short break and trying a relaxation or breathing exercise.",
+            "If possible, identify the main sources of stress and break difficult tasks into smaller steps.",
+            "Consider talking to someone you trust if stress is becoming difficult to manage."
+        ]
 
-        recommendations.extend([
-            "Try taking short breaks between demanding tasks.",
-            "Consider simple stress-management activities such as breathing exercises or mindfulness.",
-            "Break large academic or personal tasks into smaller steps."
-        ])
+    # 3 = Moderate Stress
+    elif stress_level == 3:
+        return [
+            "Your responses indicate a moderate level of stress. Make time for regular breaks and relaxation.",
+            "Try to maintain a healthy balance between study, work, sleep, and personal time."
+        ]
 
-    elif stress_level >= 3:
-
-        recommendations.append(
-            "Monitor your stress level and make time for regular rest and relaxation."
-        )
-
+    # 4 = Low Stress, 5 = Very Low Stress
     else:
+        return [
+            "Your responses indicate a relatively low level of stress. Continue the habits and activities that help you maintain your wellbeing.",
+            "Keep making time for rest, relaxation, and activities you enjoy."
+        ]
 
-        recommendations.append(
-            "Continue using the strategies that help you manage stress."
-        )
-
-    return recommendations
-
-
-# ============================================================
-# MEDITATION-BASED RECOMMENDATIONS
-# ============================================================
 
 def get_meditation_recommendations(meditation_minutes):
     """
     Return recommendations based on daily meditation duration.
 
-    The project's daily meditation target is 13 minutes.
-    Additional wellness points are capped at 13 minutes.
+    The project's wellness rule uses 13 minutes as the daily target.
+    Meditation beyond 13 minutes does not provide additional
+    meditation wellness points.
     """
 
-    recommendations = []
-
     if meditation_minutes is None:
-
-        recommendations.append(
-            "Consider trying a short guided breathing or meditation session as part of your daily wellness routine."
-        )
-
-        return recommendations
+        return [
+            "Try guided meditation or breathing exercises as part of your daily wellbeing routine."
+        ]
 
     try:
         meditation_minutes = float(meditation_minutes)
+    except (TypeError, ValueError):
+        return [
+            "Track your meditation duration using a valid number of minutes."
+        ]
 
-    except (ValueError, TypeError):
+    if meditation_minutes < 0:
+        return [
+            "Meditation duration cannot be negative."
+        ]
 
-        return recommendations
-
-    if meditation_minutes <= 0:
-
-        recommendations.append(
-            "Consider starting with a short guided breathing or meditation session."
-        )
+    if meditation_minutes == 0:
+        return [
+            "Try starting with a short guided meditation or breathing exercise today."
+        ]
 
     elif meditation_minutes < 13:
+        remaining = 13 - meditation_minutes
 
-        remaining_minutes = 13 - meditation_minutes
+        # Display whole numbers without unnecessary decimal places.
+        if remaining.is_integer():
+            remaining_display = int(remaining)
+        else:
+            remaining_display = round(remaining, 1)
 
-        recommendations.append(
-            f"You completed {meditation_minutes:g} minutes of meditation today. "
-            f"You can continue for about {remaining_minutes:g} more minutes to reach the daily 13-minute wellness target."
-        )
+        return [
+            f"You completed {int(meditation_minutes) if meditation_minutes.is_integer() else round(meditation_minutes, 1)} minutes of meditation. Try about {remaining_display} more minutes to reach the daily 13-minute wellness target."
+        ]
 
     else:
+        return [
+            "You completed the daily 13-minute meditation target. Keep maintaining this healthy habit."
+        ]
 
-        recommendations.append(
-            "You completed the daily 13-minute meditation wellness target. Keep following the practices that help you relax and recharge."
-        )
-
-    return recommendations
-
-
-# ============================================================
-# MAIN RECOMMENDATION FUNCTION
-# ============================================================
 
 def generate_recommendations(
-    wellness_result,
+    category,
+    wellness_score=None,
     sleep_hours=None,
     stress_level=None,
     meditation_minutes=None
 ):
     """
-    Generate personalized wellness recommendations.
+    Generate combined personalized wellness recommendations.
 
-    Parameters
-    ----------
-    wellness_result : dict
-        Dictionary returned by calculate_wellness_score().
+    Args:
+        category: Overall wellness category.
+        wellness_score: Overall wellness score.
+        sleep_hours: Daily sleep duration.
+        stress_level: Questionnaire stress level (1-5).
+        meditation_minutes: Daily meditation duration.
 
-    sleep_hours : float
-        Number of hours slept.
-
-    stress_level : float
-        Stress level on a scale where higher means higher stress.
-
-    meditation_minutes : float
-        Number of minutes of meditation completed today.
-
-    Returns
-    -------
-    dict
-        Dictionary containing category, score, recommendations,
-        and disclaimer.
+    Returns:
+        dict containing:
+            category
+            wellness_score
+            recommendations
+            disclaimer
     """
-
-    if not wellness_result:
-
-        return {
-            "category": "Insufficient Data",
-            "recommendations": [
-                "Please provide wellness information to receive suggestions."
-            ],
-            "disclaimer": (
-                "These suggestions are for general wellness support "
-                "and are not medical advice."
-            )
-        }
-
-    category = wellness_result.get(
-        "category",
-        "Insufficient Data"
-    )
 
     recommendations = []
 
-    # Category recommendations
+    # Overall wellness category
     recommendations.extend(
         get_category_recommendations(category)
     )
 
-    # Sleep recommendations
+    # Sleep
     recommendations.extend(
         get_sleep_recommendations(sleep_hours)
     )
 
-    # Stress recommendations
+    # Stress
     recommendations.extend(
         get_stress_recommendations(stress_level)
     )
 
-    # Meditation recommendations
+    # Meditation
     recommendations.extend(
-        get_meditation_recommendations(
-            meditation_minutes
-        )
+        get_meditation_recommendations(meditation_minutes)
     )
 
-    # Remove duplicates while preserving order
-    recommendations = list(
-        dict.fromkeys(recommendations)
-    )
+    # Remove duplicate recommendations while preserving order.
+    unique_recommendations = []
+    seen = set()
+
+    for recommendation in recommendations:
+        if recommendation not in seen:
+            unique_recommendations.append(recommendation)
+            seen.add(recommendation)
 
     return {
         "category": category,
-
-        "wellness_score": wellness_result.get(
-            "wellness_score"
-        ),
-
-        "recommendations": recommendations,
-
+        "wellness_score": wellness_score,
+        "recommendations": unique_recommendations,
         "disclaimer": (
             "These recommendations are general wellness suggestions "
-            "for educational purposes and are not a medical diagnosis "
-            "or professional treatment advice."
+            "and are not a medical diagnosis or a substitute for "
+            "professional mental-health care."
         )
     }
 
-
-# ============================================================
-# TESTING
-# ============================================================
-
-if __name__ == "__main__":
-
-    from app.analytics.wellness_scoring import (
-        calculate_wellness_score
-    )
-
-    wellness_result = calculate_wellness_score(
-        sleep_hours=7.5,
-        mood=4,
-        stress_level=3,
-        energy_level=4,
-        physical_activity=3,
-        focus=4,
-        social=3,
-        self_care=4,
-        meditation_minutes=13
-    )
-
-    result = generate_recommendations(
-        wellness_result,
-        sleep_hours=7.5,
-        stress_level=3,
-        meditation_minutes=13
-    )
-
-    print("\nPERSONALIZED WELLNESS RECOMMENDATIONS")
-    print("=" * 55)
-
-    print(
-        f"Wellness Score: "
-        f"{result['wellness_score']}/100"
-    )
-
-    print(
-        f"Category: "
-        f"{result['category']}"
-    )
-
-    print("\nRecommendations:")
-
-    for number, recommendation in enumerate(
-        result["recommendations"],
-        start=1
-    ):
-
-        print(
-            f"{number}. {recommendation}"
-        )
-
-    print("\nDisclaimer:")
-    print(result["disclaimer"])

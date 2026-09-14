@@ -1,6 +1,7 @@
 from app.rag.retriever import retrieve_context
 from app.safety.safety_checker import check_safety
 from app.llm.gemini_client import generate_response
+from app.backend.chat import save_chat_message
 
 
 def get_rag_context(user_query):
@@ -102,7 +103,7 @@ def is_mental_health_related(user_message):
     return any(keyword in message for keyword in mental_health_keywords)
 
 
-def assistant_response(user_message):
+def assistant_response(user_message, user_id=None):
     safety_result = check_safety(user_message)
 
     if not safety_result["safe"]:
@@ -144,4 +145,13 @@ Do not claim to be a mental health professional.
 Encourage professional help when appropriate.
 """
 
-    return generate_response(prompt)
+    ai_response = generate_response(prompt)
+
+    if user_id is not None:
+        save_chat_message(
+            user_id=user_id,
+            user_message=user_message,
+            ai_response=ai_response
+        )
+
+    return ai_response
