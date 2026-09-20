@@ -22,18 +22,155 @@ def get_connection():
     Create and return a connection to the SQLite database.
     """
 
-    # Create the data folder if it does not already exist
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     connection = sqlite3.connect(DATABASE_PATH)
 
-    # Return rows as dictionary-like objects
     connection.row_factory = sqlite3.Row
 
-    # Enable foreign key support
     connection.execute("PRAGMA foreign_keys = ON")
 
     return connection
+
+
+# ============================================================
+# CHAT MIGRATION
+# ============================================================
+
+def migrate_chat_history(connection):
+    """
+    Add conversation support to the existing chat history.
+
+    Existing messages are preserved and moved into a
+    'Previous Chats' conversation for each user.
+    """
+
+    cursor = connection.cursor()
+
+    # --------------------------------------------------------
+    # Create conversations table
+    # --------------------------------------------------------
+
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS conversations (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            user_id INTEGER NOT NULL,
+
+            title TEXT NOT NULL DEFAULT 'New Chat',
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+
+        )
+        """
+    )
+
+    # --------------------------------------------------------
+    # Check whether conversation_id already exists
+    # --------------------------------------------------------
+
+    cursor.execute("PRAGMA table_info(chat_history)")
+
+    columns = [column["name"] for column in cursor.fetchall()]
+
+    if "conversation_id" not in columns:
+
+        cursor.execute(
+            """
+            ALTER TABLE chat_history
+            ADD COLUMN conversation_id INTEGER
+            """
+        )
+
+    # --------------------------------------------------------
+    # Create an index for faster conversation-based searches
+    # --------------------------------------------------------
+
+    cursor.execute(
+        """
+        CREATE INDEX IF NOT EXISTS idx_chat_history_conversation
+        ON chat_history(conversation_id)
+        """
+    )
+
+    # --------------------------------------------------------
+    # Move existing messages into Previous Chats
+    # --------------------------------------------------------
+
+    cursor.execute(
+        """
+        SELECT DISTINCT user_id
+        FROM chat_history
+        WHERE conversation_id IS NULL
+        """
+    )
+
+    users_with_old_messages = cursor.fetchall()
+
+    for user_row in users_with_old_messages:
+
+        user_id = user_row["user_id"]
+
+        # Check whether a Previous Chats conversation exists
+        cursor.execute(
+            """
+            SELECT id
+            FROM conversations
+            WHERE user_id = ?
+              AND title = 'Previous Chats'
+            ORDER BY id ASC
+            LIMIT 1
+            """,
+            (user_id,)
+        )
+
+        conversation = cursor.fetchone()
+
+        if conversation:
+
+            conversation_id = conversation["id"]
+
+        else:
+
+            cursor.execute(
+                """
+                INSERT INTO conversations (
+                    user_id,
+                    title
+                )
+                VALUES (?, ?)
+                """,
+                (
+                    user_id,
+                    "Previous Chats"
+                )
+            )
+
+            conversation_id = cursor.lastrowid
+
+        # Assign old messages to this conversation
+        cursor.execute(
+            """
+            UPDATE chat_history
+            SET conversation_id = ?
+            WHERE user_id = ?
+              AND conversation_id IS NULL
+            """,
+            (
+                conversation_id,
+                user_id
+            )
+        )
+
+    connection.commit()
 
 
 # ============================================================
@@ -42,7 +179,7 @@ def get_connection():
 
 def initialize_database():
     """
-    Create all required database tables.
+    Create all required database tables and run migrations.
     """
 
     connection = get_connection()
@@ -96,6 +233,7 @@ def initialize_database():
                 ON DELETE CASCADE,
 
             UNIQUE(user_id, record_date)
+
         )
         """
     )
@@ -151,6 +289,7 @@ def initialize_database():
                 ON DELETE CASCADE,
 
             UNIQUE(user_id, record_date)
+
         )
         """
     )
@@ -192,6 +331,7 @@ def initialize_database():
                 ON DELETE CASCADE,
 
             UNIQUE(user_id, record_date)
+
         )
         """
     )
@@ -229,16 +369,24 @@ def initialize_database():
                 ON DELETE CASCADE,
 
             UNIQUE(user_id, record_date)
+
         )
         """
     )
 
     connection.commit()
 
+    # ========================================================
+    # RUN CHAT CONVERSATION MIGRATION
+    # ========================================================
+
+    migrate_chat_history(connection)
+
     connection.close()
 
     print("Database initialized successfully.")
     print(f"Database location: {DATABASE_PATH}")
+
 
 # ============================================================
 # RUN DATABASE INITIALIZATION
