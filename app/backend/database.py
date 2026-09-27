@@ -169,10 +169,106 @@ def migrate_chat_history(connection):
                 user_id
             )
         )
+    # ========================================================
+    # NOTIFICATION PREFERENCES TABLE
+    # ========================================================
 
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS notification_preferences (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            user_id INTEGER NOT NULL UNIQUE,
+
+            wellness_reminder INTEGER NOT NULL DEFAULT 1,
+
+            meditation_reminder INTEGER NOT NULL DEFAULT 1,
+
+            sleep_reminder INTEGER NOT NULL DEFAULT 1,
+
+            questionnaire_reminder INTEGER NOT NULL DEFAULT 1,
+
+            reminder_time TEXT NOT NULL DEFAULT '20:00',
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+
+        )
+        """
+    )
     connection.commit()
 
+# ============================================================
+# USER PROFILE MIGRATION
+# ============================================================
 
+def migrate_user_profile(connection):
+    """
+    Add profile-related fields to the existing users table.
+
+    Existing users are preserved. New profile fields receive
+    safe default values.
+    """
+
+    cursor = connection.cursor()
+
+    # --------------------------------------------------------
+    # Check existing users table columns
+    # --------------------------------------------------------
+
+    cursor.execute("PRAGMA table_info(users)")
+
+    columns = [
+        column["name"]
+        for column in cursor.fetchall()
+    ]
+
+    # --------------------------------------------------------
+    # Add username
+    # --------------------------------------------------------
+
+    if "username" not in columns:
+
+        cursor.execute(
+            """
+            ALTER TABLE users
+            ADD COLUMN username TEXT
+            """
+        )
+
+    # --------------------------------------------------------
+    # Add bio
+    # --------------------------------------------------------
+
+    if "bio" not in columns:
+
+        cursor.execute(
+            """
+            ALTER TABLE users
+            ADD COLUMN bio TEXT DEFAULT ''
+            """
+        )
+
+    # --------------------------------------------------------
+    # Add avatar
+    # --------------------------------------------------------
+
+    if "avatar" not in columns:
+
+        cursor.execute(
+            """
+            ALTER TABLE users
+            ADD COLUMN avatar TEXT DEFAULT '🌿'
+            """
+        )
+
+    connection.commit()
 # ============================================================
 # INITIALIZE DATABASE
 # ============================================================
@@ -373,7 +469,66 @@ def initialize_database():
         )
         """
     )
+    # ========================================================
+    # JOURNAL ENTRIES TABLE
+    # ========================================================
 
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS journal_entries (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            user_id INTEGER NOT NULL,
+
+            title TEXT NOT NULL,
+
+            content TEXT NOT NULL,
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+
+        )
+        """
+    )
+    # ========================================================
+    # NOTIFICATION PREFERENCES TABLE
+    # ========================================================
+
+    cursor.execute(
+        """
+        CREATE TABLE IF NOT EXISTS notification_preferences (
+
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+            user_id INTEGER NOT NULL UNIQUE,
+
+            wellness_reminder INTEGER NOT NULL DEFAULT 1,
+
+            meditation_reminder INTEGER NOT NULL DEFAULT 1,
+
+            sleep_reminder INTEGER NOT NULL DEFAULT 1,
+
+            questionnaire_reminder INTEGER NOT NULL DEFAULT 1,
+
+            reminder_time TEXT NOT NULL DEFAULT '20:00',
+
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+            FOREIGN KEY (user_id)
+                REFERENCES users(id)
+                ON DELETE CASCADE
+
+        )
+        """
+    )
     connection.commit()
 
     # ========================================================
@@ -381,6 +536,12 @@ def initialize_database():
     # ========================================================
 
     migrate_chat_history(connection)
+
+    # ========================================================
+    # RUN USER PROFILE MIGRATION
+    # ========================================================
+
+    migrate_user_profile(connection)
 
     connection.close()
 

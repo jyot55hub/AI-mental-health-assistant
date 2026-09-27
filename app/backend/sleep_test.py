@@ -7,9 +7,9 @@ from app.backend.sleep import (
     update_sleep_record,
     delete_sleep_record,
 )
+from app.backend.test_utils import get_test_user_id
 
-
-USER_ID = 1
+USER_ID = get_test_user_id()
 TODAY = date.today().isoformat()
 
 

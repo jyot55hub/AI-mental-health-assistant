@@ -3,13 +3,13 @@ from app.backend.chat import (
     get_chat_history,
     delete_chat_history
 )
-
+from app.backend.test_utils import get_test_user_id
 
 # ============================================================
 # TEST USER
 # ============================================================
 
-USER_ID = 1
+USER_ID = get_test_user_id()
 
 
 # ============================================================

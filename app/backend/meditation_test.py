@@ -5,13 +5,13 @@ from app.backend.meditation import (
     update_meditation_record,
     delete_meditation_record
 )
-
+from app.backend.test_utils import get_test_user_id
 
 # ============================================================
 # TEST USER
 # ============================================================
 
-USER_ID = 1
+USER_ID = get_test_user_id()
 
 
 # ============================================================

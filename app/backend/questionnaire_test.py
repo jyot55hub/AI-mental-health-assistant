@@ -5,13 +5,13 @@ from app.backend.questionnaire import (
     update_questionnaire_response,
     delete_questionnaire_response
 )
-
+from app.backend.test_utils import get_test_user_id
 
 # ============================================================
 # TEST USER
 # ============================================================
 
-USER_ID = 1
+USER_ID = get_test_user_id()
 
 # Use a fixed test date so the test is predictable.
 TEST_DATE = "2026-09-08"
